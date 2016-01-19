@@ -6,15 +6,26 @@ info = ['Here is some information.',
         'You have exhausted the information.',
 ];
 
-document.addEventListener('DOMContentLoaded', function() {
+chrome.browserAction.onClicked.addListener(function() {
+    chrome.storage.local.get('level', function(result) {
+        levelToShow = 0;
+        if (typeof result.level !== 'undefined') {
+            levelToShow = result.level;
+        }
+
+        infoIndex = Math.min(levelToShow, info.length - 1);
+        alert(info[infoIndex]);
+    });
+});
+
+chrome.alarms.onAlarm.addListener(function(alarm) {
     chrome.storage.local.get('level', function(result) {
         if (typeof result.level === 'undefined') {
             chrome.storage.local.set({'level': 0});
         } else {
             chrome.storage.local.set({'level': result.level + 1});
         }
-
-        infoIndex = Math.min(result.level, info.length - 1);
-        document.getElementById('information').textContent = info[infoIndex];
     });
 });
+
+chrome.alarms.create('Start', { periodInMinutes: 1});
