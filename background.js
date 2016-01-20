@@ -8,6 +8,8 @@ info = ['Here is some information.',
 
 chrome.browserAction.onClicked.addListener(function() {
     chrome.storage.local.get('level', function(result) {
+        chrome.browserAction.setBadgeText({text: ''});
+
         levelToShow = 0;
         if (typeof result.level !== 'undefined') {
             levelToShow = result.level;
@@ -25,6 +27,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         } else {
             chrome.storage.local.set({'level': result.level + 1});
         }
+        chrome.browserAction.setBadgeText({text: 'X'});
     });
 });
 
