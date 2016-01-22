@@ -31,4 +31,6 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     });
 });
 
-chrome.alarms.create('Start', { periodInMinutes: 1});
+chrome.storage.local.get('timeout', function(result) {
+    chrome.alarms.create('Start', { periodInMinutes: result.timeout});
+});
